@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.HealthConnectDemo" parent="Theme.Material3.Light.NoActionBar">
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <item name="colorPrimaryContainer">@color/purple_200</item>
+        <item name="colorOnPrimaryContainer">@color/purple_700</item>
+        <item name="colorError">@color/red_500</item>
+        <item name="colorOnError">@android:color/white</item>
+        <item name="colorErrorContainer">@color/red_100</item>
+        <item name="colorOnErrorContainer">@color/red_900</item>
+        <item name="android:statusBarColor">@color/purple_500</item>
+    </style>
+</resources>
