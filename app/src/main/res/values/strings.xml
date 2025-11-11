@@ -1,34 +1,62 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Health Connect Demo</string>
     
-    <!-- Temperature Input Screen -->
-    <string name="temperature_input_title">Body Temperature Tracker</string>
-    <string name="temperature_label">Temperature</string>
-    <string name="record_button">Record Temperature</string>
-    <string name="celsius">Celsius</string>
-    <string name="fahrenheit">Fahrenheit</string>
+    <!-- Permission Messages -->
+    <string name="permissions_already_granted">Permissions already granted</string>
+    <string name="permissions_granted_success">Permissions granted successfully!</string>
+    <string name="error_checking_permissions">Error checking permissions</string>
+    <string name="permissions_required">Permissions Required</string>
+    <string name="permissions_required_message">This app needs permission to read and write body temperature data in Health Connect. Please grant the required permissions to continue.</string>
+    <string name="permissions_needed_to_continue">Permissions are needed to record and view temperature data</string>
+    <string name="grant_permissions">Grant Permissions</string>
     
-    <!-- Success Messages -->
-    <string name="temperature_recorded_success">Temperature recorded successfully!</string>
+    <!-- Health Connect Messages -->
+    <string name="health_connect_required">Health Connect Required</string>
+    <string name="health_connect_install_message">Health Connect app is required to use this feature. Please install it from the Google Play Store.</string>
+    <string name="health_connect_not_available">Health Connect Not Available</string>
+    <string name="health_connect_not_available_message">Health Connect is not available on this device. Please install it from the Google Play Store.</string>
+    <string name="health_connect_not_found">Health Connect Not Found</string>
+    <string name="health_connect_not_installed_message">Health Connect app is not installed. Please install it from the Google Play Store.</string>
+    <string name="health_connect_permissions_title">Health Connect Permissions</string>
+    <string name="health_connect_permissions_message">This app needs permission to read and write body temperature data.\n\nYou will be redirected to the Health Connect app where you can grant these permissions.</string>
+    <string name="grant_temperature_permissions">Please grant Body Temperature permissions in Health Connect</string>
+    <string name="navigate_to_permissions">Navigate to: Data and access → Apps → Health Connect Demo</string>
+    <string name="could_not_open_health_connect">Could not open Health Connect: %s</string>
+    <string name="health_permissions_required">Health Connect permissions are required to record temperature</string>
     
-    <!-- Error Messages -->
-    <string name="health_connect_not_available">Health Connect is not available on this device</string>
-    <string name="health_connect_update_required">Health Connect update required</string>
-    <string name="permission_denied">Permission denied. Please grant permission to record temperature.</string>
-    <string name="invalid_temperature">Please enter a valid temperature</string>
-    <string name="temperature_out_of_range">Temperature must be between %1$s and %2$s %3$s</string>
-    <string name="failed_to_record">Failed to record temperature. Please try again.</string>
-    <string name="network_error">Network error. Please check your connection and try again.</string>
+    <!-- Button Labels -->
+    <string name="install">Install</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="open_health_connect">Open Health Connect</string>
+    <string name="open_play_store">Open Play Store</string>
+    <string name="record_temperature">Record Temperature</string>
+    <string name="view_history">View History</string>
+    <string name="check_permissions">Check/Request Permissions</string>
     
-    <!-- Buttons -->
-    <string name="dismiss">Dismiss</string>
-    <string name="retry">Retry</string>
-    <string name="grant_permission">Grant Permission</string>
-    <string name="open_settings">Open Settings</string>
-    <string name="install_health_connect">Install Health Connect</string>
+    <!-- Temperature Input -->
+    <string name="temperature_hint">Temperature (°C)</string>
+    <string name="enter_temperature">Please enter a temperature</string>
+    <string name="enter_valid_number">Please enter a valid number</string>
+    <string name="temperature_recorded">Temperature recorded</string>
+    <string name="temperature_recorded_with_user">Temperature recorded: %1$.1f°C for %2$s (%3$s)</string>
+    <string name="error_recording_temperature">Error recording temperature</string>
     
-    <!-- Permission Rationale -->
-    <string name="permission_rationale_title">Permission Required</string>
-    <string name="permission_rationale_message">This app needs permission to write body temperature data to Health Connect. This allows you to track your health data and share it with other health apps.</string>
+    <!-- Status Messages -->
+    <string name="health_connect_granted">Health Connect: Granted ✓</string>
+    <string name="health_connect_not_granted">Health Connect: Not Granted</string>
+    <string name="health_connect_unknown">Health Connect: Unknown</string>
+    <string name="permissions_granted_status">Permissions Granted</string>
+    
+    <!-- Titles -->
+    <string name="body_temperature_tracker">Body Temperature Tracker</string>
+    <string name="temperature_history">Temperature History</string>
+    
+    <!-- User Types -->
+    <string name="user_type_patient">Patient</string>
+    <string name="user_type_doctor">Doctor</string>
+    <string name="user_type_nurse">Nurse</string>
+    <string name="user_type_caregiver">Caregiver</string>
+    <string name="user_type_self">Self</string>
+    <string name="user_type_other">Other</string>
 </resources>

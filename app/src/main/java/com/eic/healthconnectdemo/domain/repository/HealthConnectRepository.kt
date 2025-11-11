@@ -30,4 +30,24 @@ interface HealthConnectRepository {
      * @return Result.Success(true) if all permissions granted, Result.Success(false) otherwise
      */
     suspend fun checkPermissions(permissions: Set<String>): Result<Boolean>
+
+    /**
+     * Reads temperature records from Health Connect.
+     *
+     * @param startTime Optional start time for filtering records
+     * @param endTime Optional end time for filtering records
+     * @return Result.Success with list of temperature records, or Result.Error if reading fails
+     */
+    suspend fun readTemperatureRecords(
+        startTime: kotlinx.datetime.Instant? = null,
+        endTime: kotlinx.datetime.Instant? = null
+    ): Result<List<TemperatureRecord>>
+
+    /**
+     * Deletes a temperature record from Health Connect.
+     *
+     * @param recordId The ID of the record to delete
+     * @return Result.Success if deletion succeeds, Result.Error if it fails
+     */
+    suspend fun deleteTemperatureRecord(recordId: String): Result<Unit>
 }

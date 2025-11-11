@@ -24,3 +24,17 @@ fun TemperatureRecord.toHealthConnectRecord(): BodyTemperatureRecord {
         temperature = Temperature.celsius(celsiusValue)
     )
 }
+
+/**
+ * Extension function to convert Health Connect BodyTemperatureRecord to domain TemperatureRecord.
+ * Returns temperature in Celsius by default.
+ */
+fun BodyTemperatureRecord.toDomainModel(): TemperatureRecord {
+    return TemperatureRecord(
+        recordId = metadata.id,
+        temperature = temperature.inCelsius,
+        unit = TemperatureUnit.CELSIUS,
+        timestamp = kotlinx.datetime.Instant.fromEpochMilliseconds(time.toEpochMilli()),
+        measurementLocation = null
+    )
+}

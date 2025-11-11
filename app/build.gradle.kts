@@ -22,9 +22,45 @@ android {
         }
     }
 
+    flavorDimensions += "environment"
+    productFlavors {
+        create("dev") {
+            dimension = "environment"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            buildConfigField("String", "ENVIRONMENT", "\"DEV\"")
+            buildConfigField("String", "BASE_URL", "\"https://dev-api.healthconnect.com\"")
+            buildConfigField("boolean", "ENABLE_LOGGING", "true")
+            resValue("string", "app_name", "HealthConnect DEV")
+        }
+        create("qa") {
+            dimension = "environment"
+            applicationIdSuffix = ".qa"
+            versionNameSuffix = "-qa"
+            buildConfigField("String", "ENVIRONMENT", "\"QA\"")
+            buildConfigField("String", "BASE_URL", "\"https://qa-api.healthconnect.com\"")
+            buildConfigField("boolean", "ENABLE_LOGGING", "true")
+            resValue("string", "app_name", "HealthConnect QA")
+        }
+        create("prod") {
+            dimension = "environment"
+            buildConfigField("String", "ENVIRONMENT", "\"PRODUCTION\"")
+            buildConfigField("String", "BASE_URL", "\"https://api.healthconnect.com\"")
+            buildConfigField("boolean", "ENABLE_LOGGING", "false")
+            resValue("string", "app_name", "HealthConnect")
+        }
+    }
+
     buildTypes {
-        release {
+        debug {
+            isDebuggable = true
             isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
+        }
+        release {
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -43,6 +79,7 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 
     packaging {

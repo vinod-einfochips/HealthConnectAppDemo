@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Health Connect Permissions -->
+    <uses-permission android:name="android.permission.health.READ_BODY_TEMPERATURE"/>
     <uses-permission android:name="android.permission.health.WRITE_BODY_TEMPERATURE"/>
     
     <!-- Query Health Connect availability -->
@@ -30,17 +31,22 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Health Connect Intent Filter -->
-        <activity-alias
-            android:name="ViewPermissionUsageActivity"
-            android:exported="true"
-            android:targetActivity=".MainActivity"
-            android:permission="android.permission.START_VIEW_PERMISSION_USAGE">
             <intent-filter>
                 <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
             </intent-filter>
-        </activity-alias>
+
+            <!-- Permission handling for Android 14 and later -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".presentation.ui.TemperatureHistoryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.HealthConnectDemo.NoActionBar"
+            android:parentActivityName=".MainActivity" />
+
     </application>
 </manifest>

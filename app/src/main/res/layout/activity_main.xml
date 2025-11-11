@@ -1,201 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="false"
     tools:context=".MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/body_temperature_tracker"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="70dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="@string/temperature_input_title" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilTemperature"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/temperature_hint"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etTemperature"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:inputType="numberDecimal"
+            android:maxLines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Health Connect Not Available Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/healthConnectUnavailableCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:cardBackgroundColor="?attr/colorErrorContainer"
-                app:cardElevation="2dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRecordTemperature"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/record_temperature"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tilTemperature"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnViewHistory"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/view_history"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        app:layout_constraintTop_toBottomOf="@id/btnRecordTemperature"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-                    <TextView
-                        android:id="@+id/healthConnectUnavailableText"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/health_connect_not_available"
-                        android:textColor="?attr/colorOnErrorContainer" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCheckPermissions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/grant_permissions"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        app:layout_constraintTop_toBottomOf="@id/btnViewHistory"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/dismissHealthConnectErrorButton"
-                        style="@style/Widget.Material3.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/dismiss" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+    <TextView
+        android:id="@+id/tvPermissionStatus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/health_connect_unknown"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toBottomOf="@id/btnCheckPermissions"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-            <!-- Temperature Input -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/temperatureInputLayout"
-                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:hint="@string/temperature_label"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/healthConnectUnavailableCard"
-                app:suffixText="°C">
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/temperatureInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:maxLines="1" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- Unit Selector -->
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/unitChipGroup"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:checkedChip="@id/celsiusChip"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/temperatureInputLayout"
-                app:selectionRequired="true"
-                app:singleSelection="true">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/celsiusChip"
-                    style="@style/Widget.Material3.Chip.Filter"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:text="@string/celsius" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/fahrenheitChip"
-                    style="@style/Widget.Material3.Chip.Filter"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/fahrenheit" />
-            </com.google.android.material.chip.ChipGroup>
-
-            <!-- Record Button -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/recordButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="@string/record_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/unitChipGroup" />
-
-            <!-- Progress Indicator -->
-            <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/progressIndicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@id/recordButton"
-                app:layout_constraintEnd_toEndOf="@id/recordButton"
-                app:layout_constraintStart_toStartOf="@id/recordButton"
-                app:layout_constraintTop_toTopOf="@id/recordButton" />
-
-            <!-- Success Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/successCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:visibility="gone"
-                app:cardBackgroundColor="?attr/colorPrimaryContainer"
-                app:cardElevation="2dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recordButton">
-
-                <TextView
-                    android:id="@+id/successMessage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:text="@string/temperature_recorded_success"
-                    android:textColor="?attr/colorOnPrimaryContainer" />
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Error Card -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/errorCard"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:visibility="gone"
-                app:cardBackgroundColor="?attr/colorErrorContainer"
-                app:cardElevation="2dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recordButton">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
-
-                    <TextView
-                        android:id="@+id/errorMessage"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textColor="?attr/colorOnErrorContainer" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/dismissErrorButton"
-                        style="@style/Widget.Material3.Button.TextButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/dismiss" />
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
