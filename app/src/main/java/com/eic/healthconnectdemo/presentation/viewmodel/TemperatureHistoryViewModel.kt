@@ -2,7 +2,11 @@ package com.eic.healthconnectdemo.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eic.healthconnectdemo.domain.model.DateRangeFilter
 import com.eic.healthconnectdemo.domain.model.Result
+import com.eic.healthconnectdemo.domain.model.SortOption
+import com.eic.healthconnectdemo.domain.model.TemperatureRangeFilter
+import com.eic.healthconnectdemo.domain.model.TemperatureRecord
 import com.eic.healthconnectdemo.domain.usecase.DeleteTemperatureRecordUseCase
 import com.eic.healthconnectdemo.domain.usecase.GetTemperatureHistoryUseCase
 import com.eic.healthconnectdemo.presentation.state.TemperatureHistoryUiState
@@ -42,7 +46,13 @@ class TemperatureHistoryViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            records = result.data
+                            allRecords = result.data,
+                            filteredRecords = applyFiltersAndSort(
+                                result.data,
+                                it.dateRangeFilter,
+                                it.temperatureRangeFilter,
+                                it.sortOption
+                            )
                         )
                     }
                 }
@@ -56,6 +66,108 @@ class TemperatureHistoryViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    /**
+     * Applies filters and sorting to the records.
+     */
+    private fun applyFiltersAndSort(
+        records: List<TemperatureRecord>,
+        dateFilter: DateRangeFilter,
+        tempFilter: TemperatureRangeFilter,
+        sortOption: SortOption
+    ): List<TemperatureRecord> {
+        var filtered = records
+
+        // Apply date range filter
+        if (dateFilter != DateRangeFilter.ALL) {
+            filtered = filtered.filter { dateFilter.matches(it.timestamp) }
+        }
+
+        // Apply temperature range filter
+        if (tempFilter != TemperatureRangeFilter.ALL) {
+            filtered = filtered.filter { tempFilter.matches(it) }
+        }
+
+        // Apply sorting
+        return sortOption.sort(filtered)
+    }
+
+    /**
+     * Updates the date range filter.
+     */
+    fun setDateRangeFilter(filter: DateRangeFilter) {
+        _uiState.update {
+            it.copy(
+                dateRangeFilter = filter,
+                filteredRecords = applyFiltersAndSort(
+                    it.allRecords,
+                    filter,
+                    it.temperatureRangeFilter,
+                    it.sortOption
+                )
+            )
+        }
+    }
+
+    /**
+     * Updates the temperature range filter.
+     */
+    fun setTemperatureRangeFilter(filter: TemperatureRangeFilter) {
+        _uiState.update {
+            it.copy(
+                temperatureRangeFilter = filter,
+                filteredRecords = applyFiltersAndSort(
+                    it.allRecords,
+                    it.dateRangeFilter,
+                    filter,
+                    it.sortOption
+                )
+            )
+        }
+    }
+
+    /**
+     * Updates the sort option.
+     */
+    fun setSortOption(option: SortOption) {
+        _uiState.update {
+            it.copy(
+                sortOption = option,
+                filteredRecords = applyFiltersAndSort(
+                    it.allRecords,
+                    it.dateRangeFilter,
+                    it.temperatureRangeFilter,
+                    option
+                )
+            )
+        }
+    }
+
+    /**
+     * Clears all filters and resets to default state.
+     */
+    fun clearFilters() {
+        _uiState.update {
+            it.copy(
+                dateRangeFilter = DateRangeFilter.ALL,
+                temperatureRangeFilter = TemperatureRangeFilter.ALL,
+                sortOption = SortOption.DATE_NEWEST_FIRST,
+                filteredRecords = applyFiltersAndSort(
+                    it.allRecords,
+                    DateRangeFilter.ALL,
+                    TemperatureRangeFilter.ALL,
+                    SortOption.DATE_NEWEST_FIRST
+                )
+            )
+        }
+    }
+
+    /**
+     * Toggles the filter panel expansion state.
+     */
+    fun toggleFilterPanel() {
+        _uiState.update { it.copy(isFilterPanelExpanded = !it.isFilterPanelExpanded) }
     }
 
     /**

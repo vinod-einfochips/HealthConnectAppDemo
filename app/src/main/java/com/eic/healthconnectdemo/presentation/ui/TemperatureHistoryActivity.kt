@@ -1,5 +1,6 @@
 package com.eic.healthconnectdemo.presentation.ui
 
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -13,6 +14,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eic.healthconnectdemo.R
 import com.eic.healthconnectdemo.databinding.ActivityTemperatureHistoryBinding
+import com.eic.healthconnectdemo.databinding.LayoutFilterPanelBinding
+import com.eic.healthconnectdemo.domain.model.DateRangeFilter
+import com.eic.healthconnectdemo.domain.model.SortOption
+import com.eic.healthconnectdemo.domain.model.TemperatureRangeFilter
 import com.eic.healthconnectdemo.presentation.viewmodel.TemperatureHistoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -24,6 +29,7 @@ import kotlinx.coroutines.launch
 class TemperatureHistoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityTemperatureHistoryBinding
+    private lateinit var filterPanelBinding: LayoutFilterPanelBinding
     private val viewModel: TemperatureHistoryViewModel by viewModels()
     private lateinit var adapter: TemperatureHistoryAdapter
 
@@ -32,8 +38,12 @@ class TemperatureHistoryActivity : AppCompatActivity() {
         binding = ActivityTemperatureHistoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Initialize filter panel binding
+        filterPanelBinding = LayoutFilterPanelBinding.bind(binding.filterPanelInclude.root)
+
         setupToolbar()
         setupRecyclerView()
+        setupFilterPanel()
         observeViewModel()
     }
 
@@ -59,6 +69,58 @@ class TemperatureHistoryActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupFilterPanel() {
+        // Toggle filter panel expansion
+        filterPanelBinding.filterPanelHeader.setOnClickListener {
+            viewModel.toggleFilterPanel()
+        }
+
+        // Sort options
+        filterPanelBinding.sortChipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
+            if (checkedIds.isNotEmpty()) {
+                when (checkedIds[0]) {
+                    R.id.chipDateNewest -> viewModel.setSortOption(SortOption.DATE_NEWEST_FIRST)
+                    R.id.chipDateOldest -> viewModel.setSortOption(SortOption.DATE_OLDEST_FIRST)
+                    R.id.chipTempHighest -> viewModel.setSortOption(SortOption.TEMPERATURE_HIGHEST_FIRST)
+                    R.id.chipTempLowest -> viewModel.setSortOption(SortOption.TEMPERATURE_LOWEST_FIRST)
+                }
+            }
+        }
+
+        // Date range filter
+        filterPanelBinding.dateRangeChipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
+            if (checkedIds.isNotEmpty()) {
+                when (checkedIds[0]) {
+                    R.id.chipDateAll -> viewModel.setDateRangeFilter(DateRangeFilter.ALL)
+                    R.id.chipDateToday -> viewModel.setDateRangeFilter(DateRangeFilter.TODAY)
+                    R.id.chipDate7Days -> viewModel.setDateRangeFilter(DateRangeFilter.LAST_7_DAYS)
+                    R.id.chipDate30Days -> viewModel.setDateRangeFilter(DateRangeFilter.LAST_30_DAYS)
+                }
+            }
+        }
+
+        // Temperature range filter
+        filterPanelBinding.tempRangeChipGroup.setOnCheckedStateChangeListener { _, checkedIds ->
+            if (checkedIds.isNotEmpty()) {
+                when (checkedIds[0]) {
+                    R.id.chipTempAll -> viewModel.setTemperatureRangeFilter(TemperatureRangeFilter.ALL)
+                    R.id.chipTempLow -> viewModel.setTemperatureRangeFilter(TemperatureRangeFilter.LOW)
+                    R.id.chipTempMedium -> viewModel.setTemperatureRangeFilter(TemperatureRangeFilter.MEDIUM)
+                    R.id.chipTempHigh -> viewModel.setTemperatureRangeFilter(TemperatureRangeFilter.HIGH)
+                }
+            }
+        }
+
+        // Clear filters button
+        filterPanelBinding.btnClearFilters.setOnClickListener {
+            viewModel.clearFilters()
+            // Reset chip selections
+            filterPanelBinding.sortChipGroup.check(R.id.chipDateNewest)
+            filterPanelBinding.dateRangeChipGroup.check(R.id.chipDateAll)
+            filterPanelBinding.tempRangeChipGroup.check(R.id.chipTempAll)
+        }
+    }
+
     private fun observeViewModel() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -73,20 +135,39 @@ class TemperatureHistoryActivity : AppCompatActivity() {
         // Loading state
         binding.progressBar.visibility = if (state.isLoading) View.VISIBLE else View.GONE
 
-        // Records
-        if (state.records.isEmpty() && !state.isLoading) {
+        // Filter panel expansion state
+        updateFilterPanelExpansion(state.isFilterPanelExpanded)
+
+        // Clear filters button visibility
+        filterPanelBinding.btnClearFilters.visibility = 
+            if (state.hasActiveFilters()) View.VISIBLE else View.GONE
+
+        // Records (use filtered records)
+        if (state.filteredRecords.isEmpty() && !state.isLoading) {
             binding.emptyView.visibility = View.VISIBLE
             binding.recyclerView.visibility = View.GONE
         } else {
             binding.emptyView.visibility = View.GONE
             binding.recyclerView.visibility = View.VISIBLE
-            adapter.submitList(state.records)
+            adapter.submitList(state.filteredRecords)
         }
 
         // Error message
         if (state.error != null) {
             Toast.makeText(this, state.error, Toast.LENGTH_LONG).show()
             viewModel.clearError()
+        }
+    }
+
+    private fun updateFilterPanelExpansion(isExpanded: Boolean) {
+        filterPanelBinding.filterPanelContent.visibility = 
+            if (isExpanded) View.VISIBLE else View.GONE
+        
+        // Animate toggle icon rotation
+        val rotation = if (isExpanded) 180f else 0f
+        ObjectAnimator.ofFloat(filterPanelBinding.filterPanelToggle, "rotation", rotation).apply {
+            duration = 200
+            start()
         }
     }
 
