@@ -9,19 +9,17 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
-import androidx.health.connect.client.HealthConnectClient
-import androidx.health.connect.client.PermissionController
-import androidx.health.connect.client.permission.HealthPermission
-import androidx.health.connect.client.records.BodyTemperatureRecord
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.eic.healthconnectdemo.core.permission.PermissionManager
 import com.eic.healthconnectdemo.databinding.ActivityMainBinding
 import com.eic.healthconnectdemo.domain.model.TemperatureUnit
 import com.eic.healthconnectdemo.presentation.ui.TemperatureHistoryActivity
 import com.eic.healthconnectdemo.presentation.viewmodel.TemperatureViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Main activity for the Health Connect Demo app.
@@ -32,19 +30,25 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: TemperatureViewModel by viewModels()
 
-    private val requestHealthConnectPermissions =
-        registerForActivityResult(
-            PermissionController.createRequestPermissionResultContract(),
-        ) { granted ->
-            val allGranted = granted.containsAll(REQUIRED_PERMISSIONS)
-            viewModel.setPermissionGranted(allGranted)
-            updatePermissionStatus(allGranted)
-        }
+    @Inject
+    lateinit var permissionManager: PermissionManager
+
+    private lateinit var requestHealthConnectPermissions: androidx.activity.result.ActivityResultLauncher<Set<String>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Initialize permission launcher after Hilt injection
+        requestHealthConnectPermissions =
+            registerForActivityResult(
+                permissionManager.createPermissionContract(),
+            ) { granted ->
+                val allGranted = granted.containsAll(PermissionManager.REQUIRED_PERMISSIONS)
+                viewModel.setPermissionGranted(allGranted)
+                updatePermissionStatus(allGranted)
+            }
 
         setupViews()
         observeViewModel()
@@ -141,11 +145,11 @@ class MainActivity : AppCompatActivity() {
      * Checks if Health Connect is available on the device.
      */
     private fun checkHealthConnectAvailability() {
-        when (HealthConnectClient.getSdkStatus(this)) {
-            HealthConnectClient.SDK_UNAVAILABLE -> {
+        when {
+            !permissionManager.isHealthConnectAvailable() && !permissionManager.needsHealthConnectUpdate() -> {
                 showHealthConnectUnavailableDialog()
             }
-            HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED -> {
+            permissionManager.needsHealthConnectUpdate() -> {
                 showHealthConnectUpdateDialog()
             }
             else -> {
@@ -161,7 +165,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkCurrentPermissions() {
         lifecycleScope.launch {
             try {
-                val granted = checkPermissions()
+                val granted = permissionManager.hasAllPermissions()
                 viewModel.setPermissionGranted(granted)
                 updatePermissionStatus(granted)
             } catch (e: Exception) {
@@ -180,7 +184,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkAndRequestPermissions() {
         lifecycleScope.launch {
             try {
-                val granted = checkPermissions()
+                val granted = permissionManager.hasAllPermissions()
                 if (granted) {
                     Toast.makeText(
                         this@MainActivity,
@@ -191,7 +195,7 @@ class MainActivity : AppCompatActivity() {
                     updatePermissionStatus(true)
                 } else {
                     // Request permissions through Health Connect
-                    requestHealthConnectPermissions.launch(REQUIRED_PERMISSIONS)
+                    permissionManager.requestPermissions(requestHealthConnectPermissions)
                 }
             } catch (e: Exception) {
                 Toast.makeText(
@@ -201,15 +205,6 @@ class MainActivity : AppCompatActivity() {
                 ).show()
             }
         }
-    }
-
-    /**
-     * Checks if all required permissions are granted.
-     */
-    private suspend fun checkPermissions(): Boolean {
-        val healthConnectClient = HealthConnectClient.getOrCreate(this)
-        val granted = healthConnectClient.permissionController.getGrantedPermissions()
-        return granted.containsAll(REQUIRED_PERMISSIONS)
     }
 
     /**
@@ -259,16 +254,5 @@ class MainActivity : AppCompatActivity() {
                 }
             startActivity(intent)
         }
-    }
-
-    companion object {
-        /**
-         * Required Health Connect permissions for this app.
-         */
-        val REQUIRED_PERMISSIONS =
-            setOf(
-                HealthPermission.getWritePermission(BodyTemperatureRecord::class),
-                HealthPermission.getReadPermission(BodyTemperatureRecord::class),
-            )
     }
 }

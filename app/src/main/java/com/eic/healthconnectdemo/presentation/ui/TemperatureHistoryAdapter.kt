@@ -5,12 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.eic.healthconnectdemo.core.formatter.DateTimeFormatter
+import com.eic.healthconnectdemo.core.util.TemperatureConverter
 import com.eic.healthconnectdemo.databinding.ItemTemperatureReadingBinding
 import com.eic.healthconnectdemo.domain.model.TemperatureRecord
-import com.eic.healthconnectdemo.domain.model.TemperatureUnit
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import com.eic.healthconnectdemo.domain.model.TemperatureStatus
 
 /**
  * RecyclerView adapter for displaying temperature history.
@@ -42,49 +41,21 @@ class TemperatureHistoryAdapter(
         private val binding: ItemTemperatureReadingBinding,
         private val onDeleteClick: (TemperatureRecord) -> Unit,
     ) : RecyclerView.ViewHolder(binding.root) {
-        private val dateFormat = SimpleDateFormat("MMM dd, yyyy 'at' hh:mm a", Locale.getDefault())
-
         fun bind(record: TemperatureRecord) {
-            // Display temperature in Celsius
-            val celsiusTemp =
-                when (record.unit) {
-                    TemperatureUnit.CELSIUS -> record.temperature
-                    TemperatureUnit.FAHRENHEIT -> (record.temperature - 32) * 5 / 9
-                }
-
-            // Display temperature in Fahrenheit
-            val fahrenheitTemp =
-                when (record.unit) {
-                    TemperatureUnit.CELSIUS -> (record.temperature * 9 / 5) + 32
-                    TemperatureUnit.FAHRENHEIT -> record.temperature
-                }
+            // Use centralized temperature converter
+            val celsiusTemp = TemperatureConverter.toCelsius(record.temperature, record.unit)
+            val fahrenheitTemp = TemperatureConverter.toFahrenheit(record.temperature, record.unit)
 
             binding.tvTemperatureCelsius.text = String.format("%.1f°C", celsiusTemp)
             binding.tvTemperatureFahrenheit.text = String.format("%.1f°F", fahrenheitTemp)
 
-            // Format date/time
-            val date = Date(record.timestamp.toEpochMilliseconds())
-            binding.tvDateTime.text = dateFormat.format(date)
+            // Use centralized date formatter
+            binding.tvDateTime.text = DateTimeFormatter.formatDateTime(record.timestamp)
 
-            // Determine status based on temperature (in Celsius)
-            val status =
-                when {
-                    celsiusTemp < 36.1 -> "Low"
-                    celsiusTemp in 36.1..37.2 -> "Normal"
-                    celsiusTemp in 37.3..38.0 -> "Elevated"
-                    else -> "High"
-                }
-            binding.tvStatus.text = status
-
-            // Set chip color based on status
-            val chipColor =
-                when (status) {
-                    "Low" -> android.R.color.holo_blue_light
-                    "Normal" -> android.R.color.holo_green_light
-                    "Elevated" -> android.R.color.holo_orange_light
-                    else -> android.R.color.holo_red_light
-                }
-            binding.tvStatus.setChipBackgroundColorResource(chipColor)
+            // Use TemperatureStatus enum for status determination
+            val status = TemperatureStatus.fromRecord(record)
+            binding.tvStatus.text = status.displayName
+            binding.tvStatus.setChipBackgroundColorResource(status.colorRes)
 
             // Delete button
             binding.btnDelete.setOnClickListener {

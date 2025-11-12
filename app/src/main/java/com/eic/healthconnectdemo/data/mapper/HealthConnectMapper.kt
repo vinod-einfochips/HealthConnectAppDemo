@@ -2,6 +2,7 @@ package com.eic.healthconnectdemo.data.mapper
 
 import androidx.health.connect.client.records.BodyTemperatureRecord
 import androidx.health.connect.client.units.Temperature
+import com.eic.healthconnectdemo.core.util.TemperatureConverter
 import com.eic.healthconnectdemo.domain.model.TemperatureRecord
 import com.eic.healthconnectdemo.domain.model.TemperatureUnit
 import java.time.Instant
@@ -13,11 +14,7 @@ import java.time.ZoneOffset
  */
 fun TemperatureRecord.toHealthConnectRecord(): BodyTemperatureRecord {
     // Convert to Celsius if needed (Health Connect stores in Celsius)
-    val celsiusValue =
-        when (unit) {
-            TemperatureUnit.CELSIUS -> temperature
-            TemperatureUnit.FAHRENHEIT -> (temperature - 32) * 5 / 9
-        }
+    val celsiusValue = TemperatureConverter.toCelsius(temperature, unit)
 
     return BodyTemperatureRecord(
         time = Instant.ofEpochMilli(timestamp.toEpochMilliseconds()),

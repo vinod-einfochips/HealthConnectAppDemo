@@ -154,6 +154,28 @@ All diagrams use Mermaid syntax for easy rendering.
 
 ---
 
+### 7. Testing Framework Documentation
+**File**: [TESTING_FRAMEWORK_DOCUMENTATION.md](TESTING_FRAMEWORK_DOCUMENTATION.md)
+
+**Contents**:
+- Testing framework configuration (JUnit 4, MockK, Coroutines Test, Turbine)
+- Testing libraries overview and usage
+- Test coverage summary (36 tests across 4 test classes)
+- Detailed test implementation:
+  - TemperatureConverterTest (10 tests)
+  - TemperatureStatusTest (8 tests)
+  - RecordTemperatureUseCaseTest (8 tests)
+  - TemperatureViewModelTest (10 tests)
+- Testing best practices (AAA pattern, mocking, coroutines)
+- Running tests (command line and Android Studio)
+- Code coverage configuration and reports
+- Test scenarios (positive, negative, edge cases)
+- Troubleshooting guide
+
+**Target Audience**: Developers, QA Engineers, Technical Leads
+
+---
+
 ## 🎯 Quick Navigation by Role
 
 ### For Product Owners / Business Analysts
@@ -173,8 +195,9 @@ All diagrams use Mermaid syntax for easy rendering.
 
 ### For QA Engineers
 1. Start with: **Acceptance Criteria**
-2. Review: **Flow Diagrams** (for test scenarios)
-3. Reference: **Requirements & Functional Specification**
+2. Review: **Testing Framework Documentation**
+3. Reference: **Flow Diagrams** (for test scenarios)
+4. Reference: **Requirements & Functional Specification**
 
 ---
 
@@ -265,6 +288,8 @@ Consistent terminology used across all documents:
 - [x] Implementation guide written
 - [x] Code examples provided
 - [x] Testing strategy defined
+- [x] Testing framework documented
+- [x] Unit tests implemented (36 tests)
 - [x] Error handling documented
 - [x] Best practices included
 

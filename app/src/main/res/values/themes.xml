@@ -10,12 +10,17 @@
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
+        <!-- Surface colors for Material Components -->
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/black</item>
         <!-- Edge to Edge support - transparent system bars -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
-        <!-- Customize your theme here. -->
+        <!-- Material Components attributes for Chips -->
+        <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Filter</item>
+        <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
     </style>
 
     <!-- Theme for activities with custom Toolbar -->

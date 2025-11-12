@@ -53,17 +53,15 @@ fun Instant.toDateTimeString(): String {
 
 /**
  * Convert Celsius to Fahrenheit.
+ * Delegates to centralized TemperatureConverter for consistency.
  */
-fun Double.celsiusToFahrenheit(): Double {
-    return (this * 9 / 5) + 32
-}
+fun Double.celsiusToFahrenheit(): Double = TemperatureConverter.celsiusToFahrenheit(this)
 
 /**
  * Convert Fahrenheit to Celsius.
+ * Delegates to centralized TemperatureConverter for consistency.
  */
-fun Double.fahrenheitToCelsius(): Double {
-    return (this - 32) * 5 / 9
-}
+fun Double.fahrenheitToCelsius(): Double = TemperatureConverter.fahrenheitToCelsius(this)
 
 /**
  * Format temperature value with unit.

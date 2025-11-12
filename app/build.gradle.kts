@@ -213,7 +213,10 @@ tasks.register<JacocoReport>("jacocoTestReport") {
     classDirectories.setFrom(files(debugTree))
     executionData.setFrom(
         fileTree(layout.buildDirectory) {
-            include("jacoco/testDevDebugUnitTest.exec")
+            include(
+                "jacoco/testDevDebugUnitTest.exec",
+                "outputs/unit_test_code_coverage/devDebugUnitTest/testDevDebugUnitTest.exec",
+            )
         },
     )
 }
@@ -270,7 +273,10 @@ tasks.register<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
     classDirectories.setFrom(files(debugTree))
     executionData.setFrom(
         fileTree(layout.buildDirectory) {
-            include("jacoco/testDevDebugUnitTest.exec")
+            include(
+                "jacoco/testDevDebugUnitTest.exec",
+                "outputs/unit_test_code_coverage/devDebugUnitTest/testDevDebugUnitTest.exec",
+            )
         },
     )
 }
