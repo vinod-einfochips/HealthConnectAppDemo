@@ -176,6 +176,25 @@ All diagrams use Mermaid syntax for easy rendering.
 
 ---
 
+### 8. CI/CD Integration Documentation
+**File**: [CI_CD_INTEGRATION.md](CI_CD_INTEGRATION.md)
+
+**Contents**:
+- CI/CD pipeline architecture and overview
+- GitHub Actions workflow configuration
+- Pipeline jobs (Build & Test, Lint, Build APK, Quality Gate)
+- Automated triggers (push, pull request, manual)
+- Quality gates (ktlint, detekt, tests, coverage, lint)
+- Artifact management (test reports, coverage, APKs)
+- Pull request integration (automatic comments)
+- Setup instructions and troubleshooting
+- Performance metrics and best practices
+- Security considerations
+
+**Target Audience**: DevOps Engineers, Technical Leads, Developers
+
+---
+
 ## 🎯 Quick Navigation by Role
 
 ### For Product Owners / Business Analysts
