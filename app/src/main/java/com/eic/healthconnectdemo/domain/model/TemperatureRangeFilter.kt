@@ -6,9 +6,10 @@ package com.eic.healthconnectdemo.domain.model
  */
 enum class TemperatureRangeFilter {
     ALL,
-    LOW,      // Below 36.5°C (97.7°F) - Hypothermia range
-    MEDIUM,   // 36.5°C to 37.5°C (97.7°F to 99.5°F) - Normal range
-    HIGH;     // Above 37.5°C (99.5°F) - Fever range
+    LOW, // Below 36.5°C (97.7°F) - Hypothermia range
+    MEDIUM, // 36.5°C to 37.5°C (97.7°F to 99.5°F) - Normal range
+    HIGH, // Above 37.5°C (99.5°F) - Fever range
+    ;
 
     /**
      * Returns the display name for this filter.
@@ -47,10 +48,11 @@ enum class TemperatureRangeFilter {
      * Automatically converts Fahrenheit to Celsius if needed.
      */
     fun matches(record: TemperatureRecord): Boolean {
-        val tempInCelsius = when (record.unit) {
-            TemperatureUnit.CELSIUS -> record.temperature
-            TemperatureUnit.FAHRENHEIT -> (record.temperature - 32) * 5 / 9
-        }
+        val tempInCelsius =
+            when (record.unit) {
+                TemperatureUnit.CELSIUS -> record.temperature
+                TemperatureUnit.FAHRENHEIT -> (record.temperature - 32) * 5 / 9
+            }
         return matchesCelsius(tempInCelsius)
     }
 }

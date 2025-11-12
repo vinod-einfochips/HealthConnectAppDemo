@@ -6,7 +6,8 @@ package com.eic.healthconnectdemo.core.config
 enum class Environment {
     DEV,
     QA,
-    PRODUCTION;
+    PRODUCTION,
+    ;
 
     companion object {
         fun fromString(value: String): Environment {

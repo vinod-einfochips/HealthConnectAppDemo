@@ -27,7 +27,6 @@ import kotlinx.coroutines.launch
  */
 @AndroidEntryPoint
 class TemperatureHistoryActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityTemperatureHistoryBinding
     private lateinit var filterPanelBinding: LayoutFilterPanelBinding
     private val viewModel: TemperatureHistoryViewModel by viewModels()
@@ -57,11 +56,12 @@ class TemperatureHistoryActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = TemperatureHistoryAdapter(
-            onDeleteClick = { record ->
-                showDeleteConfirmationDialog(record.recordId ?: "")
-            }
-        )
+        adapter =
+            TemperatureHistoryAdapter(
+                onDeleteClick = { record ->
+                    showDeleteConfirmationDialog(record.recordId ?: "")
+                },
+            )
 
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(this@TemperatureHistoryActivity)
@@ -139,7 +139,7 @@ class TemperatureHistoryActivity : AppCompatActivity() {
         updateFilterPanelExpansion(state.isFilterPanelExpanded)
 
         // Clear filters button visibility
-        filterPanelBinding.btnClearFilters.visibility = 
+        filterPanelBinding.btnClearFilters.visibility =
             if (state.hasActiveFilters()) View.VISIBLE else View.GONE
 
         // Records (use filtered records)
@@ -160,9 +160,9 @@ class TemperatureHistoryActivity : AppCompatActivity() {
     }
 
     private fun updateFilterPanelExpansion(isExpanded: Boolean) {
-        filterPanelBinding.filterPanelContent.visibility = 
+        filterPanelBinding.filterPanelContent.visibility =
             if (isExpanded) View.VISIBLE else View.GONE
-        
+
         // Animate toggle icon rotation
         val rotation = if (isExpanded) 180f else 0f
         ObjectAnimator.ofFloat(filterPanelBinding.filterPanelToggle, "rotation", rotation).apply {

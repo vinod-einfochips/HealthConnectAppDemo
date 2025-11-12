@@ -2,8 +2,6 @@ package com.eic.healthconnectdemo.domain.model
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration.Companion.days
 
 /**
@@ -13,7 +11,8 @@ enum class DateRangeFilter {
     ALL,
     TODAY,
     LAST_7_DAYS,
-    LAST_30_DAYS;
+    LAST_30_DAYS,
+    ;
 
     /**
      * Returns the display name for this filter.
@@ -33,7 +32,7 @@ enum class DateRangeFilter {
      */
     fun getStartInstant(): Instant? {
         val now = Clock.System.now()
-        
+
         return when (this) {
             ALL -> null
             TODAY -> {

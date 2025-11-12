@@ -20,5 +20,5 @@ data class TemperatureUiState(
     val permissionGranted: Boolean = false,
     val healthConnectAvailable: Boolean = false,
     val temperatureValue: String = "",
-    val selectedUnit: TemperatureUnit = TemperatureUnit.CELSIUS
+    val selectedUnit: TemperatureUnit = TemperatureUnit.CELSIUS,
 )

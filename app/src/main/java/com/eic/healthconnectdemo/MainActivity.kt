@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -30,17 +29,17 @@ import kotlinx.coroutines.launch
  */
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
     private val viewModel: TemperatureViewModel by viewModels()
 
-    private val requestHealthConnectPermissions = registerForActivityResult(
-        PermissionController.createRequestPermissionResultContract()
-    ) { granted ->
-        val allGranted = granted.containsAll(REQUIRED_PERMISSIONS)
-        viewModel.setPermissionGranted(allGranted)
-        updatePermissionStatus(allGranted)
-    }
+    private val requestHealthConnectPermissions =
+        registerForActivityResult(
+            PermissionController.createRequestPermissionResultContract(),
+        ) { granted ->
+            val allGranted = granted.containsAll(REQUIRED_PERMISSIONS)
+            viewModel.setPermissionGranted(allGranted)
+            updatePermissionStatus(allGranted)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,13 +70,13 @@ class MainActivity : AppCompatActivity() {
                 binding.tilTemperature.error = getString(R.string.enter_temperature)
                 return@setOnClickListener
             }
-            
+
             val temp = tempText.toDoubleOrNull()
             if (temp == null) {
                 binding.tilTemperature.error = getString(R.string.enter_valid_number)
                 return@setOnClickListener
             }
-            
+
             binding.tilTemperature.error = null
             viewModel.recordTemperature(temp, TemperatureUnit.CELSIUS)
         }
@@ -114,7 +113,7 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(
                 this,
                 getString(R.string.temperature_recorded),
-                Toast.LENGTH_SHORT
+                Toast.LENGTH_SHORT,
             ).show()
             binding.etTemperature.text?.clear()
         }
@@ -130,11 +129,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updatePermissionStatus(granted: Boolean) {
-        binding.tvPermissionStatus.text = if (granted) {
-            getString(R.string.health_connect_granted)
-        } else {
-            getString(R.string.health_connect_not_granted)
-        }
+        binding.tvPermissionStatus.text =
+            if (granted) {
+                getString(R.string.health_connect_granted)
+            } else {
+                getString(R.string.health_connect_not_granted)
+            }
     }
 
     /**
@@ -168,7 +168,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(
                     this@MainActivity,
                     "Error checking permissions: ${e.message}",
-                    Toast.LENGTH_SHORT
+                    Toast.LENGTH_SHORT,
                 ).show()
             }
         }
@@ -185,7 +185,7 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(
                         this@MainActivity,
                         getString(R.string.permissions_already_granted),
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     ).show()
                     viewModel.setPermissionGranted(true)
                     updatePermissionStatus(true)
@@ -197,7 +197,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(
                     this@MainActivity,
                     "Error: ${e.message}",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_LONG,
                 ).show()
             }
         }
@@ -245,16 +245,18 @@ class MainActivity : AppCompatActivity() {
      */
     private fun openPlayStore() {
         try {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("market://details?id=com.google.android.apps.healthdata")
-                setPackage("com.android.vending")
-            }
+            val intent =
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("market://details?id=com.google.android.apps.healthdata")
+                    setPackage("com.android.vending")
+                }
             startActivity(intent)
         } catch (e: Exception) {
             // If Play Store app is not available, open in browser
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata")
-            }
+            val intent =
+                Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.healthdata")
+                }
             startActivity(intent)
         }
     }
@@ -263,9 +265,10 @@ class MainActivity : AppCompatActivity() {
         /**
          * Required Health Connect permissions for this app.
          */
-        val REQUIRED_PERMISSIONS = setOf(
-            HealthPermission.getWritePermission(BodyTemperatureRecord::class),
-            HealthPermission.getReadPermission(BodyTemperatureRecord::class)
-        )
+        val REQUIRED_PERMISSIONS =
+            setOf(
+                HealthPermission.getWritePermission(BodyTemperatureRecord::class),
+                HealthPermission.getReadPermission(BodyTemperatureRecord::class),
+            )
     }
 }

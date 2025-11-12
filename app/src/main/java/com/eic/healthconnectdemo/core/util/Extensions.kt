@@ -8,9 +8,7 @@ import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
 import java.time.format.DateTimeFormatter
 
-/**
- * Extension functions for common operations.
- */
+// Extension functions for common operations
 
 /**
  * Show a short toast message.

@@ -17,14 +17,14 @@ data class TemperatureHistoryUiState(
     val dateRangeFilter: DateRangeFilter = DateRangeFilter.ALL,
     val temperatureRangeFilter: TemperatureRangeFilter = TemperatureRangeFilter.ALL,
     val sortOption: SortOption = SortOption.DATE_NEWEST_FIRST,
-    val isFilterPanelExpanded: Boolean = false
+    val isFilterPanelExpanded: Boolean = false,
 ) {
     /**
      * Returns true if any filters are active (not default).
      */
     fun hasActiveFilters(): Boolean {
         return dateRangeFilter != DateRangeFilter.ALL ||
-                temperatureRangeFilter != TemperatureRangeFilter.ALL ||
-                sortOption != SortOption.DATE_NEWEST_FIRST
+            temperatureRangeFilter != TemperatureRangeFilter.ALL ||
+            sortOption != SortOption.DATE_NEWEST_FIRST
     }
 }

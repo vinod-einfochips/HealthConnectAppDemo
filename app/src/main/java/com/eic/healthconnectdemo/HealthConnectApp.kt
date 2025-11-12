@@ -11,12 +11,11 @@ import dagger.hilt.android.HiltAndroidApp
  */
 @HiltAndroidApp
 class HealthConnectApp : Application() {
-    
     override fun onCreate() {
         super.onCreate()
         initializeApp()
     }
-    
+
     private fun initializeApp() {
         AppLogger.i("HealthConnectApp", "Initializing application")
         AppLogger.i("HealthConnectApp", "Environment: ${AppConfig.environment}")

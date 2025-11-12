@@ -40,7 +40,7 @@ interface HealthConnectRepository {
      */
     suspend fun readTemperatureRecords(
         startTime: kotlinx.datetime.Instant? = null,
-        endTime: kotlinx.datetime.Instant? = null
+        endTime: kotlinx.datetime.Instant? = null,
     ): Result<List<TemperatureRecord>>
 
     /**

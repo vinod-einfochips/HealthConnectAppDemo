@@ -13,15 +13,16 @@ import java.time.ZoneOffset
  */
 fun TemperatureRecord.toHealthConnectRecord(): BodyTemperatureRecord {
     // Convert to Celsius if needed (Health Connect stores in Celsius)
-    val celsiusValue = when (unit) {
-        TemperatureUnit.CELSIUS -> temperature
-        TemperatureUnit.FAHRENHEIT -> (temperature - 32) * 5 / 9
-    }
+    val celsiusValue =
+        when (unit) {
+            TemperatureUnit.CELSIUS -> temperature
+            TemperatureUnit.FAHRENHEIT -> (temperature - 32) * 5 / 9
+        }
 
     return BodyTemperatureRecord(
         time = Instant.ofEpochMilli(timestamp.toEpochMilliseconds()),
         zoneOffset = ZoneOffset.UTC,
-        temperature = Temperature.celsius(celsiusValue)
+        temperature = Temperature.celsius(celsiusValue),
     )
 }
 
@@ -35,6 +36,6 @@ fun BodyTemperatureRecord.toDomainModel(): TemperatureRecord {
         temperature = temperature.inCelsius,
         unit = TemperatureUnit.CELSIUS,
         timestamp = kotlinx.datetime.Instant.fromEpochMilliseconds(time.toEpochMilli()),
-        measurementLocation = null
+        measurementLocation = null,
     )
 }

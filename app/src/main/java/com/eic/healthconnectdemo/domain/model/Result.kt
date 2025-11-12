@@ -44,16 +44,18 @@ sealed class Result<out T> {
     /**
      * Returns the data if Success, null if Error.
      */
-    fun getOrNull(): T? = when (this) {
-        is Success -> data
-        is Error -> null
-    }
+    fun getOrNull(): T? =
+        when (this) {
+            is Success -> data
+            is Error -> null
+        }
 
     /**
      * Returns the data if Success, throws exception if Error.
      */
-    fun getOrThrow(): T = when (this) {
-        is Success -> data
-        is Error -> throw exception
-    }
+    fun getOrThrow(): T =
+        when (this) {
+            is Success -> data
+            is Error -> throw exception
+        }
 }

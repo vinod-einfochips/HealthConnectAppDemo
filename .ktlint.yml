@@ -1,0 +1,31 @@
+# ktlint configuration file
+# See: https://pinterest.github.io/ktlint/
+
+disabled_rules:
+  - no-wildcard-imports
+  - import-ordering
+  - no-consecutive-comments
+
+# Experimental rules
+experimental:
+  enabled: true
+
+# Indentation
+indent_size: 4
+indent_style: space
+
+# Max line length
+max_line_length: 120
+
+# Trailing comma
+ij_kotlin_allow_trailing_comma: true
+ij_kotlin_allow_trailing_comma_on_call_site: true
+
+# Import layout
+ij_kotlin_imports_layout: "*,java.**,javax.**,kotlin.**,^"
+
+# Blank lines
+ij_kotlin_blank_lines_around_block_when_branches: 0
+
+# Code style
+ktlint_code_style: android_studio

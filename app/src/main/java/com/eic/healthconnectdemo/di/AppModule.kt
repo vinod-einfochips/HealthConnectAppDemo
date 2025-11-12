@@ -17,14 +17,13 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
     /**
      * Provides HealthConnectClient instance.
      */
     @Provides
     @Singleton
     fun provideHealthConnectClient(
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): HealthConnectClient {
         return HealthConnectClient.getOrCreate(context)
     }
@@ -36,7 +35,7 @@ object AppModule {
     @Singleton
     fun provideHealthConnectRepository(
         healthConnectClient: HealthConnectClient,
-        @ApplicationContext context: Context
+        @ApplicationContext context: Context,
     ): HealthConnectRepository {
         return HealthConnectRepositoryImpl(healthConnectClient, context)
     }

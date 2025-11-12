@@ -89,3 +89,18 @@ lint/tmp/
 
 # Mac
 .DS_Store
+
+# Code Quality Tools
+# Detekt
+**/build/reports/detekt/
+# ktlint
+.ktlint/
+# JaCoCo
+**/build/reports/jacoco/
+**/build/jacoco/
+*.exec
+# Android Lint - Keep baseline, ignore reports
+**/build/reports/lint/
+# Test Reports
+**/build/reports/tests/
+**/build/test-results/

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 8.2.2">
+    <!-- This file is used to suppress lint warnings that are acceptable for this project -->
+    <!-- Run './gradlew :app:lintDebug' to update this baseline -->
+</issues>

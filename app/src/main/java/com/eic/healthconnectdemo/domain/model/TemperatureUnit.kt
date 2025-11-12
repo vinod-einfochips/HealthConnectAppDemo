@@ -5,7 +5,8 @@ package com.eic.healthconnectdemo.domain.model
  */
 enum class TemperatureUnit {
     CELSIUS,
-    FAHRENHEIT;
+    FAHRENHEIT,
+    ;
 
     /**
      * Returns the valid temperature range for this unit.

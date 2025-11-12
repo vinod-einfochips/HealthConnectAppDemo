@@ -16,7 +16,7 @@ data class TemperatureRecord(
     val temperature: Double,
     val unit: TemperatureUnit,
     val timestamp: Instant,
-    val measurementLocation: String? = null
+    val measurementLocation: String? = null,
 ) {
     init {
         require(temperature in unit.getValidRange()) {

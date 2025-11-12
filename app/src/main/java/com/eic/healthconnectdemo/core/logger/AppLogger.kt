@@ -7,31 +7,40 @@ import com.eic.healthconnectdemo.core.config.AppConfig
  * Centralized logging utility that respects environment configuration.
  */
 object AppLogger {
-    
     private const val DEFAULT_TAG = "HealthConnect"
-    
+
     /**
      * Log debug message.
      */
-    fun d(tag: String = DEFAULT_TAG, message: String) {
+    fun d(
+        tag: String = DEFAULT_TAG,
+        message: String,
+    ) {
         if (AppConfig.isLoggingEnabled) {
             Log.d(tag, message)
         }
     }
-    
+
     /**
      * Log info message.
      */
-    fun i(tag: String = DEFAULT_TAG, message: String) {
+    fun i(
+        tag: String = DEFAULT_TAG,
+        message: String,
+    ) {
         if (AppConfig.isLoggingEnabled) {
             Log.i(tag, message)
         }
     }
-    
+
     /**
      * Log warning message.
      */
-    fun w(tag: String = DEFAULT_TAG, message: String, throwable: Throwable? = null) {
+    fun w(
+        tag: String = DEFAULT_TAG,
+        message: String,
+        throwable: Throwable? = null,
+    ) {
         if (AppConfig.isLoggingEnabled) {
             if (throwable != null) {
                 Log.w(tag, message, throwable)
@@ -40,11 +49,15 @@ object AppLogger {
             }
         }
     }
-    
+
     /**
      * Log error message.
      */
-    fun e(tag: String = DEFAULT_TAG, message: String, throwable: Throwable? = null) {
+    fun e(
+        tag: String = DEFAULT_TAG,
+        message: String,
+        throwable: Throwable? = null,
+    ) {
         if (AppConfig.isLoggingEnabled) {
             if (throwable != null) {
                 Log.e(tag, message, throwable)
@@ -53,11 +66,14 @@ object AppLogger {
             }
         }
     }
-    
+
     /**
      * Log verbose message.
      */
-    fun v(tag: String = DEFAULT_TAG, message: String) {
+    fun v(
+        tag: String = DEFAULT_TAG,
+        message: String,
+    ) {
         if (AppConfig.isLoggingEnabled) {
             Log.v(tag, message)
         }

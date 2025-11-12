@@ -7,7 +7,8 @@ enum class SortOption {
     DATE_NEWEST_FIRST,
     DATE_OLDEST_FIRST,
     TEMPERATURE_HIGHEST_FIRST,
-    TEMPERATURE_LOWEST_FIRST;
+    TEMPERATURE_LOWEST_FIRST,
+    ;
 
     /**
      * Returns the display name for this sort option.
@@ -28,20 +29,22 @@ enum class SortOption {
         return when (this) {
             DATE_NEWEST_FIRST -> records.sortedByDescending { it.timestamp }
             DATE_OLDEST_FIRST -> records.sortedBy { it.timestamp }
-            TEMPERATURE_HIGHEST_FIRST -> records.sortedByDescending { 
-                // Convert to Celsius for consistent comparison
-                when (it.unit) {
-                    TemperatureUnit.CELSIUS -> it.temperature
-                    TemperatureUnit.FAHRENHEIT -> (it.temperature - 32) * 5 / 9
+            TEMPERATURE_HIGHEST_FIRST ->
+                records.sortedByDescending {
+                    // Convert to Celsius for consistent comparison
+                    when (it.unit) {
+                        TemperatureUnit.CELSIUS -> it.temperature
+                        TemperatureUnit.FAHRENHEIT -> (it.temperature - 32) * 5 / 9
+                    }
                 }
-            }
-            TEMPERATURE_LOWEST_FIRST -> records.sortedBy { 
-                // Convert to Celsius for consistent comparison
-                when (it.unit) {
-                    TemperatureUnit.CELSIUS -> it.temperature
-                    TemperatureUnit.FAHRENHEIT -> (it.temperature - 32) * 5 / 9
+            TEMPERATURE_LOWEST_FIRST ->
+                records.sortedBy {
+                    // Convert to Celsius for consistent comparison
+                    when (it.unit) {
+                        TemperatureUnit.CELSIUS -> it.temperature
+                        TemperatureUnit.FAHRENHEIT -> (it.temperature - 32) * 5 / 9
+                    }
                 }
-            }
         }
     }
 }

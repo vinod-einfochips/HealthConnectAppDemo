@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.dagger.hilt.android")
     kotlin("kapt")
+    id("jacoco")
 }
 
 android {
@@ -56,6 +57,8 @@ android {
             isDebuggable = true
             isMinifyEnabled = false
             applicationIdSuffix = ".debug"
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
         }
         release {
             isDebuggable = false
@@ -63,9 +66,33 @@ android {
             isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
+    }
+
+    lint {
+        abortOnError = true
+        checkAllWarnings = true
+        warningsAsErrors = false
+        checkReleaseBuilds = true
+        checkDependencies = true
+        baseline = file("lint-baseline.xml")
+        htmlReport = true
+        xmlReport = true
+        textReport = true
+        htmlOutput = file("${layout.buildDirectory.get()}/reports/lint/lint-results.html")
+        xmlOutput = file("${layout.buildDirectory.get()}/reports/lint/lint-results.xml")
+        textOutput = file("${layout.buildDirectory.get()}/reports/lint/lint-results.txt")
+
+        // Disable specific checks if needed
+        // InvalidPackage: JaCoCo uses java.lang.management which isn't available on Android
+        disable +=
+            listOf(
+                "ObsoleteLintCustomCheck",
+                "GradleDependency",
+                "InvalidPackage",
+            )
     }
 
     compileOptions {
@@ -95,12 +122,12 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.activity:activity-ktx:1.8.0")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
-    
+
     // UI Components
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    
+
     // Lifecycle
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
@@ -124,11 +151,163 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("io.mockk:mockk:1.13.8")
     testImplementation("app.cash.turbine:turbine:1.0.0")
-    
+
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 }
 
 kapt {
     correctErrorTypes = true
+}
+
+// JaCoCo Configuration
+jacoco {
+    toolVersion = "0.8.11"
+}
+
+tasks.withType<Test> {
+    configure<JacocoTaskExtension> {
+        isIncludeNoLocationClasses = true
+        excludes = listOf("jdk.internal.*")
+    }
+}
+
+// JaCoCo Report Task
+tasks.register<JacocoReport>("jacocoTestReport") {
+    dependsOn("testDevDebugUnitTest")
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports"
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(false)
+    }
+
+    val fileFilter =
+        listOf(
+            "**/R.class",
+            "**/R$*.class",
+            "**/BuildConfig.*",
+            "**/Manifest*.*",
+            "**/*Test*.*",
+            "android/**/*.*",
+            "**/data/model/*",
+            "**/di/*",
+            "**/*_Factory.*",
+            "**/*_MembersInjector.*",
+            "**/*Module.*",
+            "**/*Dagger*.*",
+            "**/*Hilt*.*",
+            "**/*_Provide*Factory*.*",
+        )
+
+    val debugTree =
+        fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/devDebug") {
+            exclude(fileFilter)
+        }
+
+    val mainSrc = "${project.projectDir}/src/main/java"
+
+    sourceDirectories.setFrom(files(mainSrc))
+    classDirectories.setFrom(files(debugTree))
+    executionData.setFrom(
+        fileTree(layout.buildDirectory) {
+            include("jacoco/testDevDebugUnitTest.exec")
+        },
+    )
+}
+
+// Coverage Verification Task
+tasks.register<JacocoCoverageVerification>("jacocoTestCoverageVerification") {
+    dependsOn("jacocoTestReport")
+    group = "Verification"
+    description = "Verify code coverage meets minimum thresholds"
+
+    violationRules {
+        rule {
+            limit {
+                minimum = "0.60".toBigDecimal()
+            }
+        }
+
+        rule {
+            enabled = true
+            element = "CLASS"
+            limit {
+                counter = "LINE"
+                value = "COVEREDRATIO"
+                minimum = "0.50".toBigDecimal()
+            }
+            excludes =
+                listOf(
+                    "*.BuildConfig",
+                    "*.di.*",
+                    "*.*Module",
+                    "*.*_Factory",
+                    "*.*_MembersInjector",
+                )
+        }
+    }
+
+    val fileFilter =
+        listOf(
+            "**/R.class",
+            "**/R$*.class",
+            "**/BuildConfig.*",
+            "**/Manifest*.*",
+            "**/*Test*.*",
+            "android/**/*.*",
+            "**/data/model/*",
+            "**/di/*",
+        )
+
+    val debugTree =
+        fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/devDebug") {
+            exclude(fileFilter)
+        }
+
+    classDirectories.setFrom(files(debugTree))
+    executionData.setFrom(
+        fileTree(layout.buildDirectory) {
+            include("jacoco/testDevDebugUnitTest.exec")
+        },
+    )
+}
+
+// Detekt Configuration
+detekt {
+    buildUponDefaultConfig = true
+    allRules = false
+    config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
+    baseline = file("$rootDir/config/detekt/baseline.xml")
+}
+
+dependencies {
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.4")
+}
+
+// Combined Quality Check Task
+tasks.register("qualityCheck") {
+    group = "verification"
+    description = "Run all code quality checks including tests, lint, detekt, ktlint, and coverage"
+    dependsOn(
+        "testDevDebugUnitTest",
+        "detekt",
+        "ktlintCheck",
+        "lintDevDebug",
+        "jacocoTestReport",
+        "jacocoTestCoverageVerification",
+    )
+}
+
+// Pre-commit Quality Check (faster, without coverage)
+tasks.register("preCommitCheck") {
+    group = "verification"
+    description = "Run quick quality checks before committing (no coverage)"
+    dependsOn(
+        "ktlintCheck",
+        "detekt",
+        "testDevDebugUnitTest",
+    )
 }
