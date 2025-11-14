@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.eic.healthconnectdemo.core.formatter.DateTimeFormatter
+import com.eic.healthconnectdemo.core.formatter.AppDateTimeFormatter
 import com.eic.healthconnectdemo.core.util.TemperatureConverter
 import com.eic.healthconnectdemo.databinding.ItemTemperatureReadingBinding
 import com.eic.healthconnectdemo.domain.model.TemperatureRecord
@@ -50,7 +50,7 @@ class TemperatureHistoryAdapter(
             binding.tvTemperatureFahrenheit.text = String.format("%.1f°F", fahrenheitTemp)
 
             // Use centralized date formatter
-            binding.tvDateTime.text = DateTimeFormatter.formatDateTime(record.timestamp)
+            binding.tvDateTime.text = AppDateTimeFormatter.formatDateTime(record.timestamp)
 
             // Use TemperatureStatus enum for status determination
             val status = TemperatureStatus.fromRecord(record)
