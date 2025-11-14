@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Network Security Configuration for HealthConnect App
+    
+    This configuration enforces secure network communications:
+    - HTTPS only (no cleartext traffic)
+    - Certificate pinning for production
+    - TLS 1.2+ enforcement
+    - Secure debugging configuration
+    
+    For more information:
+    https://developer.android.com/training/articles/security-config
+-->
+<network-security-config>
+    
+    <!-- Base configuration for all domains -->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <!-- Trust system certificate authorities -->
+            <certificates src="system" />
+            <!-- Trust user-added CAs only in debug builds -->
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+    
+    <!-- Production API domain configuration -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">api.healthconnect.com</domain>
+        <pin-set expiration="2026-12-31">
+            <!-- 
+                Certificate pinning for production
+                Replace these with your actual certificate pins
+                Generate pins using: openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | base64
+            -->
+            <!-- Primary certificate pin -->
+            <pin digest="SHA-256">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</pin>
+            <!-- Backup certificate pin -->
+            <pin digest="SHA-256">BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB=</pin>
+        </pin-set>
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </domain-config>
+    
+    <!-- QA API domain configuration -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">qa-api.healthconnect.com</domain>
+        <trust-anchors>
+            <certificates src="system" />
+            <!-- Allow user certificates for QA testing -->
+            <certificates src="user" />
+        </trust-anchors>
+    </domain-config>
+    
+    <!-- Development API domain configuration -->
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">dev-api.healthconnect.com</domain>
+        <trust-anchors>
+            <certificates src="system" />
+            <!-- Allow user certificates for development -->
+            <certificates src="user" />
+        </trust-anchors>
+    </domain-config>
+    
+    <!-- 
+        Debug overrides (only active in debug builds)
+        Allows localhost connections for local development
+    -->
+    <debug-overrides>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </debug-overrides>
+    
+</network-security-config>

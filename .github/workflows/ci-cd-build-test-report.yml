@@ -1,4 +1,4 @@
-name: CI-CD Pipeline
+name: CI-CD Pipeline with Security & Compliance
 
 on:
   push:
@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ main, develop ]
   workflow_dispatch:
+  schedule:
+    # Run security checks daily at 2 AM UTC
+    - cron: '0 2 * * *'
 
 jobs:
   build-and-test:
@@ -173,17 +176,104 @@ jobs:
           path: app/build/outputs/apk/dev/debug/*.apk
           retention-days: 30
 
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Check for hardcoded secrets
+        run: |
+          echo "Scanning for hardcoded secrets..."
+          if grep -rE '(password|secret|api_key|token|private_key)\s*=\s*["'\''][^"'\'']+["'\'']' app/src/main --include="*.kt" --include="*.java" --include="*.xml"; then
+            echo "❌ Potential hardcoded secrets found!"
+            exit 1
+          else
+            echo "✓ No hardcoded secrets detected"
+          fi
+
+      - name: Verify ProGuard configuration
+        run: |
+          echo "Checking ProGuard configuration..."
+          if [ ! -f "app/proguard-rules.pro" ]; then
+            echo "❌ ProGuard rules file not found"
+            exit 1
+          fi
+          if grep -q "minifyEnabled true" app/build.gradle.kts; then
+            echo "✓ ProGuard minification enabled for release builds"
+          else
+            echo "⚠ ProGuard minification not enabled"
+          fi
+
+      - name: Verify network security config
+        run: |
+          echo "Checking network security configuration..."
+          if [ ! -f "app/src/main/res/xml/network_security_config.xml" ]; then
+            echo "❌ Network security config not found"
+            exit 1
+          fi
+          if grep -q "cleartextTrafficPermitted=\"false\"" app/src/main/res/xml/network_security_config.xml; then
+            echo "✓ Cleartext traffic disabled"
+          else
+            echo "⚠ Cleartext traffic may be enabled"
+          fi
+
+      - name: Verify data protection rules
+        run: |
+          echo "Checking data protection configuration..."
+          if [ ! -f "app/src/main/res/xml/backup_rules.xml" ]; then
+            echo "❌ Backup rules not found"
+            exit 1
+          fi
+          if [ ! -f "app/src/main/res/xml/data_extraction_rules.xml" ]; then
+            echo "❌ Data extraction rules not found"
+            exit 1
+          fi
+          echo "✓ Data protection rules configured"
+
+      - name: Check for TODO/FIXME
+        run: |
+          echo "Checking for unresolved TODOs/FIXMEs..."
+          TODO_COUNT=$(grep -rn "TODO\|FIXME" app/src/main --include="*.kt" --include="*.java" | wc -l || echo 0)
+          echo "Found $TODO_COUNT TODO/FIXME comments"
+          if [ "$TODO_COUNT" -gt 50 ]; then
+            echo "⚠ High number of TODO/FIXME comments"
+          fi
+
+      - name: Dependency vulnerability check
+        run: |
+          echo "Checking for known vulnerabilities in dependencies..."
+          ./gradlew dependencyCheckAnalyze --console=plain || echo "⚠ Dependency check not configured"
+        continue-on-error: true
+
   quality-gate:
     name: Quality Gate
     runs-on: ubuntu-latest
-    needs: [build-and-test, lint]
+    needs: [build-and-test, lint, security-scan]
     if: always()
 
     steps:
       - name: Check build status
         run: |
           if [ "${{ needs.build-and-test.result }}" != "success" ]; then
-            echo "Build and test job failed"
+            echo "❌ Build and test job failed"
             exit 1
           fi
-          echo "All quality checks passed!"
+          if [ "${{ needs.security-scan.result }}" != "success" ]; then
+            echo "❌ Security scan failed"
+            exit 1
+          fi
+          echo "✓ All quality and security checks passed!"

@@ -1,9 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Data Extraction Rules for HealthConnect App (Android 12+)
+    
+    This configuration controls data extraction for:
+    - Cloud backup (Google Drive, etc.)
+    - Device-to-device transfer
+    
+    Health data is highly sensitive and must be protected according to:
+    - HIPAA (Health Insurance Portability and Accountability Act)
+    - GDPR (General Data Protection Regulation)
+    - Local health data privacy regulations
+    
+    For more information:
+    https://developer.android.com/about/versions/12/backup-restore
+-->
 <data-extraction-rules>
-    <cloud-backup>
-        <!-- Exclude sensitive data from cloud backup -->
+    
+    <!-- 
+        CLOUD BACKUP RULES (Android 12+)
+        Disable cloud backup for all sensitive health data
+    -->
+    <cloud-backup disableIfNoEncryptionCapabilities="true">
+        
+        <!-- Exclude all shared preferences -->
+        <exclude domain="sharedpref" path="." />
+        
+        <!-- Exclude all database files -->
+        <exclude domain="database" path="." />
+        
+        <!-- Exclude all internal files -->
+        <exclude domain="file" path="." />
+        
+        <!-- Exclude all cache -->
+        <exclude domain="cache" path="." />
+        
+        <!-- Exclude all external storage -->
+        <exclude domain="external" path="." />
+        
+        <!--
+            INCLUDE ONLY NON-SENSITIVE DATA (if needed)
+            Uncomment specific paths for non-sensitive data backup
+        -->
+        
+        <!-- Example: Include app settings (non-sensitive only)
+        <include domain="sharedpref" path="app_theme_settings.xml" />
+        -->
+        
     </cloud-backup>
+    
+    <!-- 
+        DEVICE TRANSFER RULES
+        Control what data is transferred during device-to-device migration
+        Health data should NOT be transferred automatically
+    -->
     <device-transfer>
-        <!-- Exclude sensitive data from device transfer -->
+        
+        <!-- Exclude all shared preferences -->
+        <exclude domain="sharedpref" path="." />
+        
+        <!-- Exclude all database files -->
+        <exclude domain="database" path="." />
+        
+        <!-- Exclude all internal files -->
+        <exclude domain="file" path="." />
+        
+        <!-- Exclude all cache -->
+        <exclude domain="cache" path="." />
+        
+        <!-- Exclude all external storage -->
+        <exclude domain="external" path="." />
+        
+        <!--
+            INCLUDE ONLY NON-SENSITIVE DATA (if needed)
+            User must re-authenticate and re-sync health data on new device
+        -->
+        
+        <!-- Example: Include user preferences (non-sensitive only)
+        <include domain="sharedpref" path="ui_preferences.xml" />
+        -->
+        
     </device-transfer>
+    
 </data-extraction-rules>
+

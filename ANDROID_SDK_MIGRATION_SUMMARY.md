@@ -1,6 +1,6 @@
 # Android SDK Migration Summary
 
-**Migration Date:** November 14, 2024  
+**Migration Date:** November 14, 2025  
 **Project:** HealthConnect Demo  
 **Migration Type:** Comprehensive SDK and API Level Update  
 **Build Status:** ✅ Successful  

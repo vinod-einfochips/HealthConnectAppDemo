@@ -1,4 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Backup Rules for HealthConnect App
+    
+    This configuration controls what data is included/excluded from Android Auto Backup.
+    Health data is sensitive and should NOT be backed up to cloud services.
+    
+    For more information:
+    https://developer.android.com/guide/topics/data/autobackup
+-->
 <full-backup-content>
-    <!-- Exclude sensitive data from backup -->
+    
+    <!-- 
+        EXCLUDE SENSITIVE DATA FROM BACKUP
+        Health data, user preferences, and cached data should not be backed up
+    -->
+    
+    <!-- Exclude shared preferences (may contain sensitive settings) -->
+    <exclude domain="sharedpref" path="." />
+    
+    <!-- Exclude database files (contains health records) -->
+    <exclude domain="database" path="." />
+    
+    <!-- Exclude internal storage files -->
+    <exclude domain="file" path="." />
+    
+    <!-- Exclude cache directory -->
+    <exclude domain="cache" path="." />
+    
+    <!-- Exclude external storage (if used) -->
+    <exclude domain="external" path="." />
+    
+    <!--
+        INCLUDE ONLY NON-SENSITIVE DATA (if needed)
+        Uncomment specific paths if you want to backup non-sensitive data
+    -->
+    
+    <!-- Example: Include specific non-sensitive preferences
+    <include domain="sharedpref" path="app_settings.xml" />
+    -->
+    
+    <!-- Example: Include specific non-sensitive files
+    <include domain="file" path="user_guide.pdf" />
+    -->
+    
 </full-backup-content>
+
