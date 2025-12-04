@@ -11,7 +11,6 @@ object AppConfig {
      */
     val environment: Environment = Environment.fromString(BuildConfig.ENVIRONMENT)
 
-
     /**
      * Whether logging is enabled.
      */
