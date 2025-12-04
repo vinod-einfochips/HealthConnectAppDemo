@@ -195,6 +195,84 @@ All diagrams use Mermaid syntax for easy rendering.
 
 ---
 
+### 10. Software Requirement Specification (SRS)
+**File**: [Software_Requirement_Specification.md](Software_Requirement_Specification.md)
+
+**Contents**:
+- Introduction and document purpose
+- Overall product description
+- **Functional Requirements** (5 requirements with detailed tables):
+  - HC-RQ-001: Temperature Recording (HC-PI-001)
+  - HC-RQ-002: Health Connect Availability Check (HC-PI-002)
+  - HC-RQ-003: Permission Management (HC-PI-003)
+  - HC-RQ-004: Input Validation (HC-PI-004)
+  - HC-RQ-005: Error Handling (HC-PI-005)
+- **Non-Functional Requirements** (5 requirements):
+  - HC-NFR-001: Performance Requirements (HC-PI-006)
+  - HC-NFR-002: Usability Requirements (HC-PI-007)
+  - HC-NFR-003: Security Requirements (HC-PI-008)
+  - HC-NFR-004: Reliability Requirements (HC-PI-009)
+  - HC-NFR-005: Maintainability Requirements (HC-PI-010)
+- System requirements (hardware, software, development)
+- Library dependencies
+- Glossary and acronyms
+- **52 Acceptance Criteria** across all requirements
+- Document approval section
+
+**Target Audience**: Product Owners, Business Analysts, Developers, QA, Stakeholders
+
+---
+
+### 11. Product Requirement Document (PRD)
+**File**: [Product_Requirement_Document.md](Product_Requirement_Document.md)
+
+**Contents**:
+- Executive summary and product vision
+- Problem statement and solution
+- Product overview and key differentiators
+- Product goals and objectives
+- **User Personas** (3 detailed personas with use cases)
+- **Product Features** (5 core features with detailed specifications):
+  - Temperature Recording (HC-RQ-001, HC-PI-001)
+  - Health Connect Availability Check (HC-RQ-002, HC-PI-002)
+  - Permission Management (HC-RQ-003, HC-PI-003)
+  - Input Validation (HC-RQ-004, HC-PI-004)
+  - Error Handling (HC-RQ-005, HC-PI-005)
+- User experience and design specifications
+- Screen designs and user flows
+- Technical architecture overview
+- **Success Metrics** (KPIs, quality metrics, business metrics)
+- **Release Plan** (3 phases: MVP, Enhancements, Advanced Features)
+- Competitive analysis
+- Risk management
+- Technical debt tracking
+
+**Target Audience**: Product Managers, Stakeholders, Design Team, Engineering Team
+
+---
+
+### 12. SRS & PRD Summary
+**File**: [SRS_PRD_SUMMARY.md](SRS_PRD_SUMMARY.md)
+
+**Contents**:
+- Quick reference for SRS and PRD documents
+- **Requirement ID & Product ID Mapping** (10 requirements)
+- **Complete Acceptance Criteria Summary** (52 criteria organized by requirement)
+- Validation rules and business rules
+- Performance targets and quality metrics
+- Technical stack summary
+- User stories mapping
+- Scope (in scope and out of scope)
+- Success criteria (user experience, technical, business)
+- Testing requirements (36+ tests)
+- Documentation checklist
+- Release plan overview
+- Quick reference commands
+
+**Target Audience**: All team members (quick reference)
+
+---
+
 ## 🎯 Quick Navigation by Role
 
 ### For Product Owners / Business Analysts
@@ -223,10 +301,18 @@ All diagrams use Mermaid syntax for easy rendering.
 ## 📊 Document Relationships
 
 ```
-Requirements & Functional Spec
+Product Requirement Document (PRD)
         ↓
-    Defines
+    Defines Product Vision
         ↓
+Software Requirement Specification (SRS)
+        ↓
+    Defines Technical Requirements
+        ↓
+SRS & PRD Summary ←→ Requirements & Functional Spec
+        ↓                      ↓
+    Quick Reference        Detailed Specs
+        ↓                      ↓
 Acceptance Criteria ←→ Architecture Overview
         ↓                      ↓
     Validates              Structures
@@ -300,7 +386,10 @@ Consistent terminology used across all documents:
 ## ✅ Documentation Checklist
 
 - [x] Requirements documented
-- [x] Acceptance criteria defined
+- [x] Software Requirement Specification (SRS) created
+- [x] Product Requirement Document (PRD) created
+- [x] SRS & PRD Summary created
+- [x] Acceptance criteria defined (52 criteria)
 - [x] API documentation complete
 - [x] Architecture documented
 - [x] Flow diagrams created
@@ -311,6 +400,9 @@ Consistent terminology used across all documents:
 - [x] Unit tests implemented (36 tests)
 - [x] Error handling documented
 - [x] Best practices included
+- [x] User personas defined
+- [x] Success metrics defined
+- [x] Release plan documented
 
 ---
 
@@ -327,21 +419,25 @@ If you find any issues or have suggestions for improving this documentation:
 
 ### Beginner (New to Project)
 1. Read README.md
-2. Review Requirements & Functional Spec
-3. Study Flow Diagrams
-4. Follow Implementation Guide
+2. Review Product Requirement Document (PRD)
+3. Study SRS & PRD Summary for quick overview
+4. Review Requirements & Functional Spec
+5. Study Flow Diagrams
+6. Follow Implementation Guide
 
 ### Intermediate (Implementing Features)
-1. Reference Method-Level API Documentation
-2. Study Architecture Overview
-3. Review Acceptance Criteria for testing
-4. Use Flow Diagrams for debugging
+1. Reference Software Requirement Specification (SRS)
+2. Reference Method-Level API Documentation
+3. Study Architecture Overview
+4. Review Acceptance Criteria for testing
+5. Use Flow Diagrams for debugging
 
 ### Advanced (Architecture/Design)
 1. Deep dive into Architecture Overview
 2. Study design patterns used
 3. Review all flow diagrams
 4. Understand dependency management
+5. Review PRD for product vision and roadmap
 
 ---
 

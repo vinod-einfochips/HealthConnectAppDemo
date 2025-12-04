@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId = "com.eic.healthconnectdemo"
         minSdk = 28
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -30,7 +30,6 @@ android {
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev"
             buildConfigField("String", "ENVIRONMENT", "\"DEV\"")
-            buildConfigField("String", "BASE_URL", "\"https://dev-api.healthconnect.com\"")
             buildConfigField("boolean", "ENABLE_LOGGING", "true")
             resValue("string", "app_name", "HealthConnect DEV")
         }
@@ -39,14 +38,12 @@ android {
             applicationIdSuffix = ".qa"
             versionNameSuffix = "-qa"
             buildConfigField("String", "ENVIRONMENT", "\"QA\"")
-            buildConfigField("String", "BASE_URL", "\"https://qa-api.healthconnect.com\"")
             buildConfigField("boolean", "ENABLE_LOGGING", "true")
             resValue("string", "app_name", "HealthConnect QA")
         }
         create("prod") {
             dimension = "environment"
             buildConfigField("String", "ENVIRONMENT", "\"PRODUCTION\"")
-            buildConfigField("String", "BASE_URL", "\"https://api.healthconnect.com\"")
             buildConfigField("boolean", "ENABLE_LOGGING", "false")
             resValue("string", "app_name", "HealthConnect")
         }

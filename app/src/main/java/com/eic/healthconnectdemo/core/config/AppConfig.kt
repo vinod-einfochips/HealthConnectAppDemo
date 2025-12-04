@@ -11,10 +11,6 @@ object AppConfig {
      */
     val environment: Environment = Environment.fromString(BuildConfig.ENVIRONMENT)
 
-    /**
-     * Base URL for API calls (if needed in future).
-     */
-    val baseUrl: String = BuildConfig.BASE_URL
 
     /**
      * Whether logging is enabled.

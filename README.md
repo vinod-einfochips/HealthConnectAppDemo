@@ -345,11 +345,13 @@ kapt("com.google.dagger:hilt-compiler:2.48")
 ## Contributing
 
 When contributing to this project:
-1. Follow the existing architecture patterns
-2. Write unit tests for new features
-3. Update documentation
-4. Follow Kotlin coding conventions
-5. Ensure all tests pass before submitting
+1. **Read the [Code Style Guide](CODE_STYLE_GUIDE.md)** - Mandatory for all contributors
+2. Run `./gradlew preCommitCheck` before committing
+3. Follow the existing architecture patterns
+4. Write unit tests for new features (60% coverage minimum)
+5. Update documentation
+6. Ensure all quality checks pass (ktlint, detekt, tests)
+7. No TODO/FIXME comments in production code
 
 ---
 
