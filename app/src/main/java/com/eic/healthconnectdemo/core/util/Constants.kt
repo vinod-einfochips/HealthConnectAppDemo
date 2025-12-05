@@ -36,5 +36,18 @@ object Constants {
     object UI {
         const val DEBOUNCE_DELAY_MS = 300L
         const val ANIMATION_DURATION_MS = 300L
+
+        // Splash screen animation constants
+        const val SPLASH_BUTTON_DELAY_MS = 200L
+        const val SPLASH_LOGO_DELAY_MS = 0L
+        const val SPLASH_TITLE_DELAY_MS = 200L
+        const val SPLASH_ICON_DELAY_MS = 400L
+        const val SPLASH_SUBTITLE_DELAY_MS = 600L
+        const val SPLASH_BUTTON_START_DELAY_MS = 800L
+        const val SPLASH_FADE_DURATION_MS = 600L
+        const val SPLASH_SCALE_DURATION_MS = 800L
+        const val SPLASH_SLIDE_DURATION_MS = 600L
+        const val SPLASH_SCALE_START = 0.5f
+        const val SPLASH_TRANSLATION_Y = 100f
     }
 }

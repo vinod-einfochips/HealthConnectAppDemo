@@ -11,28 +11,17 @@
     <ID>Indentation:GetTemperatureHistoryUseCase.kt$GetTemperatureHistoryUseCase$ </ID>
     <ID>Indentation:HealthConnectRepositoryImpl.kt$HealthConnectRepositoryImpl$ </ID>
     <ID>Indentation:RecordTemperatureUseCase.kt$RecordTemperatureUseCase$ </ID>
+    <ID>Indentation:SplashViewModel.kt$SplashViewModel$ </ID>
+    <ID>Indentation:SplashViewModel.kt$SplashViewModel.NavigationEvent$ </ID>
     <ID>Indentation:TemperatureHistoryViewModel.kt$TemperatureHistoryViewModel$ </ID>
     <ID>Indentation:TemperatureViewModel.kt$TemperatureViewModel$ </ID>
     <ID>InstanceOfCheckForException:DeleteTemperatureRecordUseCase.kt$DeleteTemperatureRecordUseCase$e as Exception</ID>
     <ID>InstanceOfCheckForException:RecordTemperatureUseCase.kt$RecordTemperatureUseCase$e as Exception</ID>
-    <ID>MagicNumber:Extensions.kt$32</ID>
-    <ID>MagicNumber:Extensions.kt$5</ID>
-    <ID>MagicNumber:Extensions.kt$9</ID>
-    <ID>MagicNumber:HealthConnectMapper.kt$32</ID>
-    <ID>MagicNumber:HealthConnectMapper.kt$5</ID>
-    <ID>MagicNumber:HealthConnectMapper.kt$9</ID>
     <ID>MagicNumber:SortOption.kt$SortOption$32</ID>
     <ID>MagicNumber:SortOption.kt$SortOption$5</ID>
     <ID>MagicNumber:SortOption.kt$SortOption$9</ID>
     <ID>MagicNumber:TemperatureHistoryActivity.kt$TemperatureHistoryActivity$180f</ID>
     <ID>MagicNumber:TemperatureHistoryActivity.kt$TemperatureHistoryActivity$200</ID>
-    <ID>MagicNumber:TemperatureHistoryAdapter.kt$TemperatureHistoryAdapter.TemperatureViewHolder$32</ID>
-    <ID>MagicNumber:TemperatureHistoryAdapter.kt$TemperatureHistoryAdapter.TemperatureViewHolder$36.1</ID>
-    <ID>MagicNumber:TemperatureHistoryAdapter.kt$TemperatureHistoryAdapter.TemperatureViewHolder$37.2</ID>
-    <ID>MagicNumber:TemperatureHistoryAdapter.kt$TemperatureHistoryAdapter.TemperatureViewHolder$37.3</ID>
-    <ID>MagicNumber:TemperatureHistoryAdapter.kt$TemperatureHistoryAdapter.TemperatureViewHolder$38.0</ID>
-    <ID>MagicNumber:TemperatureHistoryAdapter.kt$TemperatureHistoryAdapter.TemperatureViewHolder$5</ID>
-    <ID>MagicNumber:TemperatureHistoryAdapter.kt$TemperatureHistoryAdapter.TemperatureViewHolder$9</ID>
     <ID>MagicNumber:TemperatureRangeFilter.kt$TemperatureRangeFilter$32</ID>
     <ID>MagicNumber:TemperatureRangeFilter.kt$TemperatureRangeFilter$35.0</ID>
     <ID>MagicNumber:TemperatureRangeFilter.kt$TemperatureRangeFilter$36.49</ID>
@@ -47,10 +36,6 @@
     <ID>MagicNumber:TemperatureUnit.kt$TemperatureUnit$42.0</ID>
     <ID>MagicNumber:TemperatureUnit.kt$TemperatureUnit$95.0</ID>
     <ID>MagicNumber:TemperatureViewModel.kt$TemperatureViewModel$3000</ID>
-    <ID>MaxLineLength:RecordTemperatureUseCase.kt$RecordTemperatureUseCase$"Temperature must be between ${unit.getValidRange().start} and ${unit.getValidRange().endInclusive} ${unit.getSymbol()}"</ID>
-    <ID>MaxLineLength:TemperatureViewModel.kt$TemperatureViewModel$error = "Temperature must be between ${unit.getValidRange().start} and ${unit.getValidRange().endInclusive} ${unit.getSymbol()}"</ID>
-    <ID>MaximumLineLength:RecordTemperatureUseCase.kt$RecordTemperatureUseCase$ </ID>
-    <ID>MaximumLineLength:TemperatureViewModel.kt$TemperatureViewModel$ </ID>
     <ID>SwallowedException:MainActivity.kt$MainActivity$e: Exception</ID>
     <ID>TooGenericExceptionCaught:DeleteTemperatureRecordUseCase.kt$DeleteTemperatureRecordUseCase$e: Exception</ID>
     <ID>TooGenericExceptionCaught:GetTemperatureHistoryUseCase.kt$GetTemperatureHistoryUseCase$e: Exception</ID>

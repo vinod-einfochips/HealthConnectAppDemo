@@ -59,4 +59,9 @@
     <string name="user_type_caregiver">Caregiver</string>
     <string name="user_type_self">Self</string>
     <string name="user_type_other">Other</string>
+    
+    <!-- Splash Screen -->
+    <string name="splash_title">Health Connect</string>
+    <string name="splash_subtitle">Body Temperature</string>
+    <string name="splash_button">Get started</string>
 </resources>

@@ -13,7 +13,7 @@ The application supports three environments with different configurations:
    - Logging: Enabled
    - Can be installed alongside QA and Production builds
 
-2. **QA (qa)**
+2. **QA (qa)** 
    - App ID: `com.eic.healthconnectdemo.qa`
    - App Name: "HealthConnect QA"
    - Base URL: `https://qa-api.healthconnect.com`
