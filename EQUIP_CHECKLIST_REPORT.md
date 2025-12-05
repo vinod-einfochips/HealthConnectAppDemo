@@ -794,7 +794,7 @@ fun `invoke should return error when temperature is below valid range`() = runTe
 
 ## Summary Table
 
-| # | Criterion | Status | Notes |
+| # | Criteria | Status | Notes |
 |---|-----------|--------|-------|
 | 1 | Major Warnings Resolved | 🟢 PASS | Minor warnings acceptable |
 | 2 | Static/Local Variables | 🟢 PASS | Well-organized constants |
